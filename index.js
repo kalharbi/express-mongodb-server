@@ -1,17 +1,16 @@
 var express = require("express");
 var dbConnection = require("./dbConnection");
-var config = require("./config");
 
 var app = express();
 
-const dbUrl = "mongodb://" + config.host + ":" + config.port + "/" + config.db;
+const dbUrl = "mongodb://" + process.env.ExpressMongo_USER + ":" +
+  process.env.ExpressMongo_PW + "@" + process.env.ExpressMongo_HOST + ":" +
+  process.env.ExpressMongo_PORT + "/" + process.env.ExpressMongo_DB;
 app.use(dbConnection(dbUrl));
 
 var server = app.listen(6000, function() {
-  var host = server.address()
-    .address;
-  var port = server.address()
-    .port;
+  var host = server.address().address;
+  var port = server.address().port;
   console.log("Server is listening at http://%s:%s", host, port);
 });
 
@@ -25,15 +24,16 @@ app.get("/find", function(req, res) {
       });
     return;
   }
-  var collection = req.db.collection(config.collection);
-  try{
+  var collection = req.db.collection(process.env.ExpressMongo_COLLECTION);
+  try {
     var query = JSON.parse(queryText);
     var projection = projectionText ? JSON.parse(projectionText) : {};
-  }
-  catch(SyntaxError){
+  } catch (SyntaxError) {
     res.status(400)
       .json({
-        message: "The given query is not a valid JSON object."
+        message: "The given query does not contain a valid JSON object. " +
+          "Please check your syntax (e.g. ensure you are using double quotes " +
+          "around both your field names and values)."
       });
     return;
   }
