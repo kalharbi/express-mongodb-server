@@ -8,7 +8,7 @@ const dbUrl = "mongodb://" + process.env.ExpressMongo_USER + ":" +
   process.env.ExpressMongo_PORT + "/" + process.env.ExpressMongo_DB;
 app.use(dbConnection(dbUrl));
 
-var server = app.listen(6000, function() {
+var server = app.listen(process.env.PORT || 6000, function() {
   var host = server.address().address;
   var port = server.address().port;
   console.log("Server is listening at http://%s:%s", host, port);
