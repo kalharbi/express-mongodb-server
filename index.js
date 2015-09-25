@@ -17,6 +17,7 @@ var server = app.listen(process.env.PORT || 6000, function() {
 app.get("/find", function(req, res) {
   var queryText = req.query.q;
   var projectionText = req.query.p;
+  res.setHeaders({ "Access-Control-Allow-Origin": "*" });
   if (!queryText) {
     res.status(400)
       .json({
