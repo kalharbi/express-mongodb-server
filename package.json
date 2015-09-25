@@ -4,7 +4,7 @@
   "description": "An express web server that receives mongodb queries as an http GET request and responses with the matched results",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Khalid Alharbi",
   "license": "MIT",
