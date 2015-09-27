@@ -30,6 +30,8 @@ app.get("/find", function(req, res) {
     var queryObject = JSON.parse("[" + queryText + "]");
     var query = queryObject[0];
     var projection = queryObject[1] ? queryObject[1] : {};
+    // Limit the returned results to 10 documents per query
+    projection["limit"] = 10;
   } catch (SyntaxError) {
     res.status(400)
       .json({
