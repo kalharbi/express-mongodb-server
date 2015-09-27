@@ -8,7 +8,7 @@ const dbUrl = "mongodb://" + process.env.ExpressMongo_USER + ":" +
   process.env.ExpressMongo_PORT + "/" + process.env.ExpressMongo_DB;
 app.use(dbConnection(dbUrl));
 
-var server = app.listen(process.env.PORT || 6000, function() {
+var server = app.listen(process.env.PORT || 3000, function() {
   var host = server.address().address;
   var port = server.address().port;
   console.log("Server is listening at http://%s:%s", host, port);
@@ -16,7 +16,6 @@ var server = app.listen(process.env.PORT || 6000, function() {
 
 app.get("/find", function(req, res) {
   var queryText = req.query.q;
-  var projectionText = req.query.p;
   res.setHeader("Access-Control-Allow-Origin", "*");
   if (!queryText) {
     res.status(400)
@@ -27,8 +26,10 @@ app.get("/find", function(req, res) {
   }
   var collection = req.db.collection(process.env.ExpressMongo_COLLECTION);
   try {
-    var query = JSON.parse(queryText);
-    var projection = projectionText ? JSON.parse(projectionText) : {};
+    console.log("Received query: " + queryText);
+    var queryObject = JSON.parse("[" + queryText + "]");
+    var query = queryObject[0];
+    var projection = queryObject[1] ? queryObject[1] : {};
   } catch (SyntaxError) {
     res.status(400)
       .json({

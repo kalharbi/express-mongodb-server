@@ -21,5 +21,5 @@ This example uses: [httpie](https://github.com/jkbrzt/httpie)
 ```bash
 
 node ./index.js
-http GET http://localhost:6000/find q=='{"n":"com.evernote"}' p=='{"t":1}'
+http GET http://localhost:6000/find q=='{"n":"com.evernote"},{"t":1}'
 ```
